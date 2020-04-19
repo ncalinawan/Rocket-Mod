@@ -7,6 +7,12 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_select', './assets/blip_select12.wav');
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+
+        this.load.audio('bg_music', './assets/purrple-cat-wild-strawberry.wav');
+        /*Wild Strawberry by Purrple Cat | https://purrplecat.com
+        Music promoted by https://www.free-stock-music.com
+        Creative Commons Attribution-ShareAlike 3.0 Unported
+        https://creativecommons.org/licenses/by-sa/3.0/deed.en_US */
     }
 
     create() {
@@ -27,6 +33,8 @@ class Menu extends Phaser.Scene {
         let centerY = game.config.height/2;
         let textSpacer = 64;
 
+        this.bgSound = this.sound.add("bg_music");
+
         this.add.text(centerX, centerY- textSpacer, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
         this.add.text(centerX, centerY, 'Use <- -> arrows to move & (F) to Fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
@@ -37,10 +45,12 @@ class Menu extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-    //    this.scene.start("playScene");
     }
 
     update() {
+        
+        this.bgSound.play();
+        
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             game.settings = {
                 spaceshipSpeed: 3,

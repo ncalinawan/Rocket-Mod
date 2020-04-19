@@ -7,7 +7,7 @@ class Play extends Phaser.Scene {
         // load images/tile sprites
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
-        this.load.image('starfield', './assets/starfield.png');
+        this.load.image('starfield', './assets/starwave.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
       }
 
@@ -60,7 +60,7 @@ class Play extends Phaser.Scene {
         }
         this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
         this.scoreRight = this.add.text(471, 54, 'HS:'  + this.highScore, scoreConfig);
-        this.fireText = this.add.text(28ffff0, 54, 'FIRE', scoreConfig);
+        this.fireText = this.add.text(280, 54, 'FIRE', scoreConfig);
         this.fireText.visible = false;
 
         this.gameOver = false;
@@ -75,7 +75,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        
+
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)){
             this.scene.restart(this.p1Score);
         }
