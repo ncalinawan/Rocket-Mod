@@ -11,9 +11,18 @@ class Play extends Phaser.Scene {
         this.load.image('starfield', './assets/starwave.png');
         //new tile sprite
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
-      }
+      
+        //Add music
+        this.load.audio('bg_music', './assets/purrple-cat-wild-strawberry.wav');
+        /*Wild Strawberry by Purrple Cat | https://purrplecat.com
+        Music promoted by https://www.free-stock-music.com
+        Creative Commons Attribution-ShareAlike 3.0 Unported
+        https://creativecommons.org/licenses/by-sa/3.0/deed.en_US */
+    }
 
     create() {
+        this.bgSound = this.sound.add("bg_music");
+        this.bgSound.play();
         // creates tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0,0);
 
@@ -76,26 +85,27 @@ class Play extends Phaser.Scene {
     
         this.gameOver = false;
 
+        //speed doubles after 30 seconds
+        this.speedIncrease = this.time.delayedCall(30000, () => {
+            game.settings.spaceshipSpeed = game.settings.spaceshipSpeed * 2;
+            game.settings.specialSpeed = game.settings.specialSpeed * 2;
+        }, null, this);
+        
+
         // 60 second timer
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 +64, '(F)ire to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
+            this.bgSound.stop();
         }, null, this);
 
-        //speed doubles after 30 secs
-        this.speedIncrease = this.time.delayedCall(30000, () => {
-            game.settings = {
-                spaceshipSpeed: game.settings.spaceshipSpeed * 2,
-                specialSpeed: game.settings.specialSpeed * 2
-            }     
-        }, null, this);
+        
         }
 
     update() {
-        
-        
+          
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)){
             this.scene.restart(this.p1Score);
         }
@@ -107,6 +117,14 @@ class Play extends Phaser.Scene {
         // makes starfield move
         this.starfield.tilePositionX -= 4;
 
+        if(!this.gameOver){
+            this.p1Rocket.update();
+            this.ship01.update();               // update spaceships (x3)
+            this.ship02.update();
+            this.ship03.update();
+            this.specialship.update();
+        }
+
         //Fire UI
         if(this.p1Rocket.isFiring == true){
             this.fireText.visible = true;  
@@ -116,14 +134,9 @@ class Play extends Phaser.Scene {
 
         this.timer -= 16.65;
         this.timeRemaining.text = this.msToSeconds(this.timer);
-                    
-        if(!this.gameOver){
-            this.p1Rocket.update();
-            this.ship01.update();               // update spaceships (x3)
-            this.ship02.update();
-            this.ship03.update();
-            this.specialship.update();
-        }
+        if (this.timer <= 0){
+            this.timer = 0;
+        }  
 
         if (this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
