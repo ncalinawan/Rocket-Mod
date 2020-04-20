@@ -8,6 +8,7 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
 
+        //Add music
         this.load.audio('bg_music', './assets/purrple-cat-wild-strawberry.wav');
         /*Wild Strawberry by Purrple Cat | https://purrplecat.com
         Music promoted by https://www.free-stock-music.com
@@ -32,8 +33,8 @@ class Menu extends Phaser.Scene {
         let centerX = game.config.width/2;
         let centerY = game.config.height/2;
         let textSpacer = 64;
-
         this.bgSound = this.sound.add("bg_music");
+        
 
         this.add.text(centerX, centerY- textSpacer, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
         this.add.text(centerX, centerY, 'Use <- -> arrows to move & (F) to Fire', menuConfig).setOrigin(0.5);
@@ -49,23 +50,27 @@ class Menu extends Phaser.Scene {
 
     update() {
         
-        this.bgSound.play();
-        
+
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+            this.bgSound.play();
             game.settings = {
                 spaceshipSpeed: 3,
+                specialSpeed: 6,
                 gameTimer: 60000
             }
             this.sound.play('sfx_select');
             this.scene.start("playScene");
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+            this.bgSound.play();
             game.settings = {
                 spaceshipSpeed: 4,
+                specialSpeed: 8,
                 gameTimer: 45000
             }
             this.sound.play('sfx_select');
             this.scene.start("playScene");
         }
+
     }
 }
