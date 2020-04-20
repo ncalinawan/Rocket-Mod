@@ -44,22 +44,22 @@ class Play extends Phaser.Scene {
         });
 
         this.p1Score = 0;
-        this.highScore;
+        this.highScore = 0;
 
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            align: 'right',
+            align: 'left',
             padding: {
-                top: 5,
-                bottom: 5,
+                top: 1,
+                bottom: 1,
             },
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
-        this.scoreRight = this.add.text(471, 54, 'HS:'  + this.highScore, scoreConfig);
+        this.scoreRight = this.add.text(470, 54, 'HS:'  + this.highScore, scoreConfig);
         this.fireText = this.add.text(280, 54, 'FIRE', scoreConfig);
         this.fireText.visible = false;
 
@@ -117,7 +117,7 @@ class Play extends Phaser.Scene {
         }
         
         //updates highscore
-        this.scoreRight.text = 'HS: ' + localStorage.getItem("highscore");
+        this.scoreRight.text = 'HS:' + localStorage.getItem("highscore");
         {
             if (this.p1Score > localStorage.getItem("highscore")){ 
             localStorage.setItem("highscore", this.p1Score);
